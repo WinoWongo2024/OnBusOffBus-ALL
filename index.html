@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OnBusOffBus | Coming Soon</title>
+    <title>OnBusOffBus | The Future is Loading</title>
     <style>
         :root {
-            --primary: #1a1a1a;
-            --accent: #ffcc00; /* Transit Yellow */
-            --bg: #ffffff;
-            --text-main: #333333;
-            --card-bg: #f8f9fa;
+            --on-green: #2ecc71;
+            --off-blue: #3498db;
+            --accent-purple: #9b59b6;
+            --dark-bg: #0f172a;
+            --glass: rgba(255, 255, 255, 0.05);
         }
 
         * {
@@ -20,140 +20,202 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg);
-            color: var(--text-main);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: radial-gradient(circle at top right, #1e293b, var(--dark-bg));
+            color: #ffffff;
             min-height: 100vh;
-            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
         }
 
-        .wrapper {
-            width: 100%;
-            max-width: 900px;
+        /* Animated Background Elements */
+        .bg-glow {
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            background: var(--accent-purple);
+            filter: blur(120px);
+            opacity: 0.2;
+            z-index: -1;
+            animation: float 10s infinite alternate;
+        }
+
+        @keyframes float {
+            from { transform: translate(0, 0); }
+            to { transform: translate(100px, 100px); }
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
             text-align: center;
         }
 
-        /* Dynamic Typography */
-        h1 {
-            font-size: clamp(2.5rem, 8vw, 4.5rem);
+        .brand-title {
+            font-size: clamp(3rem, 10vw, 6rem);
             font-weight: 900;
-            letter-spacing: -2px;
+            letter-spacing: -3px;
             margin-bottom: 10px;
-            color: var(--primary);
+            filter: drop-shadow(0 0 15px rgba(0,0,0,0.5));
         }
 
-        .status-badge {
-            display: inline-block;
-            background: var(--accent);
-            padding: 6px 16px;
-            font-weight: bold;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            border-radius: 4px;
-            margin-bottom: 20px;
-        }
+        .on-text { color: var(--on-green); }
+        .off-text { color: var(--off-blue); }
+        .bus-text { color: #fff; }
 
-        p.subtext {
-            font-size: clamp(1rem, 2.5vw, 1.25rem);
-            color: #666;
+        .tagline {
+            font-size: 1.2rem;
+            color: #94a3b8;
             margin-bottom: 40px;
+            text-transform: uppercase;
+            letter-spacing: 4px;
         }
 
-        /* Responsive Timer Grid */
-        .timer-container {
+        /* Countdown Style */
+        .timer-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr); /* 2x2 on small mobile */
+            grid-template-columns: repeat(2, 1fr);
             gap: 15px;
-            margin: 0 auto;
+            width: 100%;
+            max-width: 700px;
         }
 
-        /* Desktop Layout: 4 columns */
-        @media (min-width: 600px) {
-            .timer-container {
-                grid-template-columns: repeat(4, 1fr);
-            }
+        @media (min-width: 650px) {
+            .timer-grid { grid-template-columns: repeat(4, 1fr); }
         }
 
-        .time-box {
-            background: var(--card-bg);
-            padding: clamp(15px, 4vw, 30px);
-            border-radius: 12px;
-            border: 1px solid #eee;
+        .unit-box {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 30px 10px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
 
-        .number {
+        .unit-box::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 4px;
+            background: linear-gradient(90deg, var(--on-green), var(--off-blue), var(--accent-purple));
+        }
+
+        .unit-box:hover { transform: translateY(-5px); }
+
+        .num {
             display: block;
-            font-size: clamp(2rem, 6vw, 3.5rem);
+            font-size: clamp(2.5rem, 5vw, 4rem);
             font-weight: 800;
-            color: var(--primary);
-            line-height: 1;
+            font-variant-numeric: tabular-nums;
         }
 
         .label {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #64748b;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            color: #999;
-            margin-top: 8px;
-            display: block;
         }
+
+        /* Footer Style */
+        footer {
+            padding: 40px 20px;
+            background: rgba(0,0,0,0.2);
+            border-top: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .log-link {
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.2s;
+        }
+
+        .log-link:hover { color: var(--accent-purple); }
+        
+        .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+        .dot.dev { background: var(--off-blue); }
+        .dot.public { background: var(--on-green); }
     </style>
 </head>
 <body>
 
-    <div class="wrapper">
-        <div class="status-badge">Construction in Progress</div>
-        <h1>OnBusOffBus</h1>
-        <p class="subtext">The future of transit in ÖestVèl is arriving soon.</p>
+    <div class="bg-glow"></div>
 
-        <div class="timer-container" id="timer">
-            <div class="time-box">
-                <span class="number" id="days">00</span>
+    <main>
+        <div class="brand-title">
+            <span class="on-text">On</span><span class="bus-text">Bus</span><span class="off-text">Off</span><span class="bus-text">Bus</span>
+        </div>
+        <p class="tagline">Next Stop: Revolution</p>
+
+        <div class="timer-grid">
+            <div class="unit-box">
+                <span class="num" id="d">00</span>
                 <span class="label">Days</span>
             </div>
-            <div class="time-box">
-                <span class="number" id="hours">00</span>
+            <div class="unit-box">
+                <span class="num" id="h">00</span>
                 <span class="label">Hours</span>
             </div>
-            <div class="time-box">
-                <span class="number" id="minutes">00</span>
-                <span class="label">Mins</span>
+            <div class="unit-box">
+                <span class="num" id="m">00</span>
+                <span class="label">Minutes</span>
             </div>
-            <div class="time-box">
-                <span class="number" id="seconds">00</span>
-                <span class="label">Secs</span>
+            <div class="unit-box">
+                <span class="num" id="s">00</span>
+                <span class="label">Seconds</span>
             </div>
         </div>
-    </div>
+    </main>
+
+    <footer>
+        <a href="dev-logs.html" class="log-link">
+            <span class="dot dev"></span> Internal Developer Logs
+        </a>
+        <a href="public-logs.html" class="log-link">
+            <span class="dot public"></span> System Status & Public Logs
+        </a>
+    </footer>
 
     <script>
-        const targetDate = new Date("February 25, 2026 00:00:00").getTime();
+        const target = new Date("February 25, 2026 00:00:00").getTime();
 
-        function updateCountdown() {
+        function tick() {
             const now = new Date().getTime();
-            const diff = targetDate - now;
+            const diff = target - now;
 
             if (diff <= 0) {
-                document.querySelector(".wrapper").innerHTML = "<h1>Welcome to OnBusOffBus</h1>";
+                document.querySelector("main").innerHTML = "<h1>SYSTEM ONLINE</h1>";
                 return;
             }
 
-            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const s = Math.floor((diff % (1000 * 60)) / 1000);
+            const d = Math.floor(diff / (86400000));
+            const h = Math.floor((diff % 86400000) / 3600000);
+            const m = Math.floor((diff % 3600000) / 60000);
+            const s = Math.floor((diff % 60000) / 1000);
 
-            document.getElementById("days").innerText = String(d).padStart(2, '0');
-            document.getElementById("hours").innerText = String(h).padStart(2, '0');
-            document.getElementById("minutes").innerText = String(m).padStart(2, '0');
-            document.getElementById("seconds").innerText = String(s).padStart(2, '0');
+            document.getElementById('d').innerText = d.toString().padStart(2, '0');
+            document.getElementById('h').innerText = h.toString().padStart(2, '0');
+            document.getElementById('m').innerText = m.toString().padStart(2, '0');
+            document.getElementById('s').innerText = s.toString().padStart(2, '0');
         }
 
-        setInterval(updateCountdown, 1000);
-        updateCountdown(); // Initial call
+        setInterval(tick, 1000);
+        tick();
     </script>
 </body>
 </html>
