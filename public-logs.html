@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Status | OnBusOffBus</title>
+    <style>
+        :root {
+            --on-green: #2ecc71;
+            --bg: #0f172a;
+        }
+        body {
+            background: var(--bg);
+            color: #ffffff;
+            font-family: -apple-system, sans-serif;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .container { width: 100%; max-width: 600px; }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+        .back-link {
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        .back-link:hover { color: white; }
+        .status-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .status-item:last-child { border: none; }
+        .indicator {
+            color: var(--on-green);
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .dot { width: 10px; height: 10px; background: var(--on-green); border-radius: 50%; }
+        h2 { margin-bottom: 20px; font-weight: 800; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h2>Public Status</h2>
+            <a href="index.html" class="back-link">Back to Launchpad</a>
+        </div>
+
+        <div class="status-card">
+            <div class="status-item">
+                <span>Website Platform</span>
+                <span class="indicator"><span class="dot"></span> Operational</span>
+            </div>
+            <div class="status-item">
+                <span>Countdown Engine</span>
+                <span class="indicator"><span class="dot"></span> Active</span>
+            </div>
+            <div class="status-item">
+                <span>Fleet Tracking Database</span>
+                <span class="indicator"><span class="dot"></span> Ready</span>
+            </div>
+            <div class="status-item">
+                <span>Customer Support Portal</span>
+                <span class="indicator" style="color: #3498db;">Coming Feb 25</span>
+            </div>
+        </div>
+
+        <p style="margin-top: 30px; color: #64748b; font-size: 0.85rem; text-align: center;">
+            All systems are nominal. Deployment scheduled for Feb 25, 2026.
+        </p>
+    </div>
+
+</body>
+</html>
