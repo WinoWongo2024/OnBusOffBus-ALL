@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dev Console | OnBusOffBus</title>
+    <style>
+        :root {
+            --dev-blue: #3498db;
+            --terminal-bg: #0a0f1a;
+            --text-code: #94a3b8;
+        }
+        body {
+            background-color: var(--terminal-bg);
+            color: var(--text-code);
+            font-family: 'Courier New', monospace;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .nav-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #1e293b;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        .back-btn {
+            color: var(--dev-blue);
+            text-decoration: none;
+            border: 1px solid var(--dev-blue);
+            padding: 5px 15px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+        .back-btn:hover {
+            background: var(--dev-blue);
+            color: white;
+        }
+        .log-entry { margin-bottom: 10px; }
+        .timestamp { color: #64748b; }
+        .tag { padding: 2px 6px; border-radius: 3px; font-size: 0.8rem; margin-right: 10px; }
+        .tag-info { background: #1e293b; color: #3498db; }
+        .tag-warn { background: #422006; color: #fbbf24; }
+        .code-block {
+            background: rgba(255,255,255,0.03);
+            padding: 15px;
+            border-left: 3px solid var(--dev-blue);
+            margin: 10px 0;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="nav-header">
+        <div><strong>INTERNAL_DEV_LOGS_V2.0</strong></div>
+        <a href="index.html" class="back-btn">← RETURN TO TERMINAL</a>
+    </div>
+
+    <div class="log-entry">
+        <span class="timestamp">[2026-02-24 09:12:01]</span>
+        <span class="tag tag-info">INFO</span>
+        <span>WebSocket connection established with Fleet-Node-01.</span>
+    </div>
+
+    <div class="log-entry">
+        <span class="timestamp">[2026-02-24 10:45:22]</span>
+        <span class="tag tag-warn">WARN</span>
+        <span>High latency detected on Route API; initiating load balancer.</span>
+    </div>
+
+    <div class="code-block">
+        $ git pull origin production<br>
+        $ npm run build:fleet-assets<br>
+        > Building assets for 2026-02-25 launch... Success.
+    </div>
+
+    <div class="log-entry">
+        <span class="timestamp">[Current Session]</span>
+        <span class="tag tag-info">DEBUG</span>
+        <span>Timer synchronized with global NTP clock. Launch sequence locked.</span>
+    </div>
+
+</body>
+</html>
