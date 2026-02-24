@@ -3,247 +3,138 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OnBusOffBus | Official Launch</title>
-    <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.9.3/dist/dotlottie-wc.js" type="module"></script>
-    
+    <title>OnBusOffBus Hub</title>
+    <link rel="manifest" href="manifest.json">
     <style>
         :root {
             --on-green: #27ae60;
             --off-blue: #2980b9;
             --accent-purple: #8e44ad;
-            --bg-deep: #05070a;
-            --glass-bg: rgba(255, 255, 255, 0.03);
-            --border: rgba(255, 255, 255, 0.08);
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+            --bg: #05070a;
+            --glass: rgba(255, 255, 255, 0.05);
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: var(--bg-deep);
-            background-image: 
-                radial-gradient(circle at 0% 0%, rgba(142, 68, 173, 0.15) 0%, transparent 40%),
-                radial-gradient(circle at 100% 100%, rgba(41, 128, 185, 0.1) 0%, transparent 40%);
-            color: #ffffff;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        /* Top Left Logo */
-        header {
-            padding: 30px 50px;
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 10;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 800;
-            letter-spacing: -1px;
-            text-decoration: none;
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
             color: white;
-        }
-
-        .logo .on { color: var(--on-green); }
-        .logo .off { color: var(--off-blue); }
-
-        /* Main Content Layout */
-        main {
-            flex: 1;
+            margin: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            padding: 20px;
+            min-height: 100vh;
         }
 
-        .animation-container {
-            margin-bottom: -20px; /* Pulls the timer closer to the animation */
-        }
-
-        .hero-text {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .hero-text h2 {
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 6px;
-            color: var(--accent-purple);
-            margin-bottom: 10px;
-        }
-
-        /* Professional Countdown Grid */
-        .countdown-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
+        header {
             width: 100%;
-            max-width: 650px;
-        }
-
-        @media (max-width: 600px) {
-            .countdown-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 10px;
-            }
-        }
-
-        .time-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(15px);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 30px 10px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .time-card::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, var(--on-green), var(--off-blue));
-            opacity: 0.5;
-        }
-
-        .time-value {
-            display: block;
-            font-size: clamp(2rem, 5vw, 3rem);
-            font-weight: 700;
-            font-variant-numeric: tabular-nums;
-            margin-bottom: 5px;
-        }
-
-        .time-label {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: #64748b;
-        }
-
-        /* Footer Links */
-        footer {
             padding: 30px;
             display: flex;
-            justify-content: center;
-            gap: 40px;
-            background: rgba(0,0,0,0.3);
-            border-top: 1px solid var(--border);
+            justify-content: flex-start;
         }
 
-        .footer-link {
-            color: #94a3b8;
-            text-decoration: none;
-            font-size: 0.85rem;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: color 0.3s ease;
+        .logo { font-size: 1.5rem; font-weight: 800; text-decoration: none; color: white; }
+        .on { color: var(--on-green); }
+        .off { color: var(--off-blue); }
+
+        .app-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            width: 90%;
+            max-width: 1000px;
+            margin-top: 50px;
         }
 
-        .footer-link:hover {
-            color: white;
+        .app-card {
+            background: var(--glass);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            transition: 0.3s;
         }
 
-        .status-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: currentColor;
+        .app-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            display: block;
         }
+
+        h3 { margin: 10px 0; }
+        p { color: #94a3b8; font-size: 0.85rem; margin-bottom: 20px; }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+            text-transform: uppercase;
+        }
+
+        .btn-download { background: var(--on-green); color: white; }
+        .btn-update { background: var(--accent-purple); color: white; }
+        .btn-open { background: var(--off-blue); color: white; }
+        
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
     </style>
 </head>
 <body>
 
     <header>
-        <a href="#" class="logo">
-            <span class="on">On</span>Bus<span class="off">Off</span>Bus
-        </a>
+        <a href="#" class="logo"><span class="on">On</span>Bus<span class="off">Off</span>Bus</a>
     </header>
 
-    <main>
-        <div class="animation-container">
-            <dotlottie-wc
-                src="https://lottie.host/d24ff661-b3bb-4ca6-bd54-8dd4d7ce1c85/gdCIs4zMwW.lottie"
-                style="width: 300px; height: 300px"
-                autoplay
-                loop
-            ></dotlottie-wc>
+    <div class="app-grid">
+        <div class="app-card">
+            <span class="app-icon">🚍</span>
+            <h3>Fleet Manager</h3>
+            <p id="fleet-version-display">Latest: v2.0.1</p>
+            <button id="btn-fleet" class="btn" onclick="appAction('fleet', '2.0.1', 'app-fleet.html')">Checking...</button>
         </div>
-
-        <div class="hero-text">
-            <h2>System Departure</h2>
-        </div>
-
-        <div class="countdown-grid">
-            <div class="time-card">
-                <span class="time-value" id="days">00</span>
-                <span class="time-label">Days</span>
-            </div>
-            <div class="time-card">
-                <span class="time-value" id="hours">00</span>
-                <span class="time-label">Hours</span>
-            </div>
-            <div class="time-card">
-                <span class="time-value" id="mins">00</span>
-                <span class="time-label">Mins</span>
-            </div>
-            <div class="time-card">
-                <span class="time-value" id="secs">00</span>
-                <span class="time-label">Secs</span>
-            </div>
-        </div>
-    </main>
-
-    <footer>
-        <a href="dev-logs.html" class="footer-link">
-            <span class="status-dot" style="color: var(--off-blue)"></span> Developer Console
-        </a>
-        <a href="public-logs.html" class="footer-link">
-            <span class="status-dot" style="color: var(--on-green)"></span> Public Status
-        </a>
-    </footer>
+    </div>
 
     <script>
-        const launchDate = new Date("February 25, 2026 00:00:00").getTime();
+        function appAction(appId, latestVersion, url) {
+            const installedVersion = localStorage.getItem(`${appId}_version`);
+            const btn = document.getElementById(`btn-${appId}`);
 
-        function updateClock() {
-            const now = new Date().getTime();
-            const t = launchDate - now;
-
-            if (t <= 0) {
-                document.querySelector(".countdown-grid").innerHTML = "<h3>DEPARTURE COMMENCED</h3>";
-                return;
+            if (!installedVersion) {
+                // Initial Download
+                localStorage.setItem(`${appId}_version`, latestVersion);
+                alert("App Registered. You can now add to Home Screen.");
+                refreshUI(appId, latestVersion);
+            } else if (installedVersion !== latestVersion) {
+                // Update Logic
+                localStorage.setItem(`${appId}_version`, latestVersion);
+                alert("Update Complete!");
+                refreshUI(appId, latestVersion);
+            } else {
+                // Open App
+                window.location.href = url;
             }
-
-            const d = Math.floor(t / 86400000);
-            const h = Math.floor((t % 86400000) / 3600000);
-            const m = Math.floor((t % 3600000) / 60000);
-            const s = Math.floor((t % 60000) / 1000);
-
-            document.getElementById('days').innerText = d.toString().padStart(2, '0');
-            document.getElementById('hours').innerText = h.toString().padStart(2, '0');
-            document.getElementById('mins').innerText = m.toString().padStart(2, '0');
-            document.getElementById('secs').innerText = s.toString().padStart(2, '0');
         }
 
-        setInterval(updateClock, 1000);
-        updateClock();
+        function refreshUI(appId, latest) {
+            const btn = document.getElementById(`btn-${appId}`);
+            const installed = localStorage.getItem(`${appId}_version`);
+
+            if (!installed) {
+                btn.innerText = "Download";
+                btn.className = "btn btn-download";
+            } else if (installed !== latest) {
+                btn.innerText = "Update Available";
+                btn.className = "btn btn-update";
+            } else {
+                btn.innerText = "Open App";
+                btn.className = "btn btn-open";
+            }
+        }
+
+        // Initialize state
+        window.onload = () => refreshUI('fleet', '2.0.1');
     </script>
 </body>
 </html>
