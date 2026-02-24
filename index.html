@@ -6,136 +6,154 @@
     <title>OnBusOffBus | Coming Soon</title>
     <style>
         :root {
-            --primary: #2c3e50;
-            --accent: #e67e22;
-            --bg: #f4f7f6;
-            --text: #333;
+            --primary: #1a1a1a;
+            --accent: #ffcc00; /* Transit Yellow */
+            --bg: #ffffff;
+            --text-main: #333333;
+            --card-bg: #f8f9fa;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg);
-            color: var(--text);
+            color: var(--text-main);
             display: flex;
-            justify-content: center;
             align-items: center;
-            height: 100vh;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .wrapper {
+            width: 100%;
+            max-width: 900px;
             text-align: center;
         }
 
-        .container {
-            max-width: 600px;
-            padding: 2rem;
-        }
-
+        /* Dynamic Typography */
         h1 {
-            font-size: 3rem;
-            margin-bottom: 0.5rem;
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
+            font-weight: 900;
+            letter-spacing: -2px;
+            margin-bottom: 10px;
             color: var(--primary);
-            letter-spacing: -1px;
         }
 
-        .status-tag {
+        .status-badge {
+            display: inline-block;
             background: var(--accent);
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            text-transform: uppercase;
+            padding: 6px 16px;
             font-weight: bold;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            border-radius: 4px;
+            margin-bottom: 20px;
         }
 
-        #timer {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 3rem;
+        p.subtext {
+            font-size: clamp(1rem, 2.5vw, 1.25rem);
+            color: #666;
+            margin-bottom: 40px;
         }
 
-        .time-segment {
-            background: white;
-            padding: 15px;
-            border-radius: 10px;
-            min-width: 80px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        /* Responsive Timer Grid */
+        .timer-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* 2x2 on small mobile */
+            gap: 15px;
+            margin: 0 auto;
+        }
+
+        /* Desktop Layout: 4 columns */
+        @media (min-width: 600px) {
+            .timer-container {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        .time-box {
+            background: var(--card-bg);
+            padding: clamp(15px, 4vw, 30px);
+            border-radius: 12px;
+            border: 1px solid #eee;
         }
 
         .number {
             display: block;
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: var(--accent);
+            font-size: clamp(2rem, 6vw, 3.5rem);
+            font-weight: 800;
+            color: var(--primary);
+            line-height: 1;
         }
 
         .label {
-            font-size: 0.8rem;
-            color: #7f8c8d;
+            font-size: 0.75rem;
             text-transform: uppercase;
-        }
-
-        p.info {
-            margin-top: 2rem;
-            color: #7f8c8d;
+            letter-spacing: 2px;
+            color: #999;
+            margin-top: 8px;
+            display: block;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <span class="status-tag">Under Construction</span>
+    <div class="wrapper">
+        <div class="status-badge">Construction in Progress</div>
         <h1>OnBusOffBus</h1>
-        <p>We are currently optimizing our routes. See you at the terminal soon.</p>
+        <p class="subtext">The future of transit in ÖestVèl is arriving soon.</p>
 
-        <div id="timer">
-            <div class="time-segment">
+        <div class="timer-container" id="timer">
+            <div class="time-box">
                 <span class="number" id="days">00</span>
                 <span class="label">Days</span>
             </div>
-            <div class="time-segment">
+            <div class="time-box">
                 <span class="number" id="hours">00</span>
                 <span class="label">Hours</span>
             </div>
-            <div class="time-segment">
+            <div class="time-box">
                 <span class="number" id="minutes">00</span>
                 <span class="label">Mins</span>
             </div>
-            <div class="time-segment">
+            <div class="time-box">
                 <span class="number" id="seconds">00</span>
                 <span class="label">Secs</span>
             </div>
         </div>
-
-        <p class="info">Launch Reference: AS-20260203-0834</p>
     </div>
 
     <script>
-        // Set the date we're counting down to
-        const countDownDate = new Date("Feb 25, 2026 00:00:00").getTime();
+        const targetDate = new Date("February 25, 2026 00:00:00").getTime();
 
-        const x = setInterval(function() {
+        function updateCountdown() {
             const now = new Date().getTime();
-            const distance = countDownDate - now;
+            const diff = targetDate - now;
 
-            // Calculations for days, hours, minutes and seconds
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            // Output the results
-            document.getElementById("days").innerHTML = days;
-            document.getElementById("hours").innerHTML = hours;
-            document.getElementById("minutes").innerHTML = minutes;
-            document.getElementById("seconds").innerHTML = seconds;
-
-            // If the count down is over
-            if (distance < 0) {
-                clearInterval(x);
-                document.querySelector(".container").innerHTML = "<h1>OnBusOffBus is Live!</h1>";
+            if (diff <= 0) {
+                document.querySelector(".wrapper").innerHTML = "<h1>Welcome to OnBusOffBus</h1>";
+                return;
             }
-        }, 1000);
+
+            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerText = String(d).padStart(2, '0');
+            document.getElementById("hours").innerText = String(h).padStart(2, '0');
+            document.getElementById("minutes").innerText = String(m).padStart(2, '0');
+            document.getElementById("seconds").innerText = String(s).padStart(2, '0');
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown(); // Initial call
     </script>
 </body>
 </html>
