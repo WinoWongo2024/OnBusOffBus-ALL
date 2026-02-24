@@ -3,14 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OnBusOffBus | The Future is Loading</title>
+    <title>OnBusOffBus | Official Launch</title>
+    <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.9.3/dist/dotlottie-wc.js" type="module"></script>
+    
     <style>
         :root {
-            --on-green: #2ecc71;
-            --off-blue: #3498db;
-            --accent-purple: #9b59b6;
-            --dark-bg: #0f172a;
-            --glass: rgba(255, 255, 255, 0.05);
+            --on-green: #27ae60;
+            --off-blue: #2980b9;
+            --accent-purple: #8e44ad;
+            --bg-deep: #05070a;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.08);
         }
 
         * {
@@ -20,32 +23,39 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, sans-serif;
-            background: radial-gradient(circle at top right, #1e293b, var(--dark-bg));
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-deep);
+            background-image: 
+                radial-gradient(circle at 0% 0%, rgba(142, 68, 173, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 100% 100%, rgba(41, 128, 185, 0.1) 0%, transparent 40%);
             color: #ffffff;
-            min-height: 100vh;
+            height: 100vh;
             display: flex;
             flex-direction: column;
-            overflow-x: hidden;
+            overflow: hidden;
         }
 
-        /* Animated Background Elements */
-        .bg-glow {
-            position: fixed;
-            width: 300px;
-            height: 300px;
-            background: var(--accent-purple);
-            filter: blur(120px);
-            opacity: 0.2;
-            z-index: -1;
-            animation: float 10s infinite alternate;
+        /* Top Left Logo */
+        header {
+            padding: 30px 50px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 10;
         }
 
-        @keyframes float {
-            from { transform: translate(0, 0); }
-            to { transform: translate(100px, 100px); }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            text-decoration: none;
+            color: white;
         }
 
+        .logo .on { color: var(--on-green); }
+        .logo .off { color: var(--off-blue); }
+
+        /* Main Content Layout */
         main {
             flex: 1;
             display: flex;
@@ -53,169 +63,187 @@
             align-items: center;
             justify-content: center;
             padding: 20px;
+        }
+
+        .animation-container {
+            margin-bottom: -20px; /* Pulls the timer closer to the animation */
+        }
+
+        .hero-text {
             text-align: center;
-        }
-
-        .brand-title {
-            font-size: clamp(3rem, 10vw, 6rem);
-            font-weight: 900;
-            letter-spacing: -3px;
-            margin-bottom: 10px;
-            filter: drop-shadow(0 0 15px rgba(0,0,0,0.5));
-        }
-
-        .on-text { color: var(--on-green); }
-        .off-text { color: var(--off-blue); }
-        .bus-text { color: #fff; }
-
-        .tagline {
-            font-size: 1.2rem;
-            color: #94a3b8;
             margin-bottom: 40px;
+        }
+
+        .hero-text h2 {
+            font-size: 0.9rem;
             text-transform: uppercase;
-            letter-spacing: 4px;
+            letter-spacing: 6px;
+            color: var(--accent-purple);
+            margin-bottom: 10px;
         }
 
-        /* Countdown Style */
-        .timer-grid {
+        /* Professional Countdown Grid */
+        .countdown-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
             width: 100%;
-            max-width: 700px;
+            max-width: 650px;
         }
 
-        @media (min-width: 650px) {
-            .timer-grid { grid-template-columns: repeat(4, 1fr); }
+        @media (max-width: 600px) {
+            .countdown-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
         }
 
-        .unit-box {
-            background: var(--glass);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.1);
+        .time-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--border);
+            border-radius: 16px;
             padding: 30px 10px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            transition: transform 0.3s ease;
+            text-align: center;
             position: relative;
             overflow: hidden;
         }
 
-        .unit-box::before {
+        .time-card::after {
             content: '';
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 4px;
-            background: linear-gradient(90deg, var(--on-green), var(--off-blue), var(--accent-purple));
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--on-green), var(--off-blue));
+            opacity: 0.5;
         }
 
-        .unit-box:hover { transform: translateY(-5px); }
-
-        .num {
+        .time-value {
             display: block;
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            font-weight: 800;
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 700;
             font-variant-numeric: tabular-nums;
+            margin-bottom: 5px;
         }
 
-        .label {
+        .time-label {
             font-size: 0.7rem;
-            font-weight: 600;
-            color: #64748b;
             text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #64748b;
         }
 
-        /* Footer Style */
+        /* Footer Links */
         footer {
-            padding: 40px 20px;
-            background: rgba(0,0,0,0.2);
-            border-top: 1px solid rgba(255,255,255,0.05);
+            padding: 30px;
             display: flex;
-            flex-wrap: wrap;
             justify-content: center;
-            gap: 30px;
+            gap: 40px;
+            background: rgba(0,0,0,0.3);
+            border-top: 1px solid var(--border);
         }
 
-        .log-link {
+        .footer-link {
             color: #94a3b8;
             text-decoration: none;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
+            font-weight: 500;
             display: flex;
             align-items: center;
-            gap: 8px;
-            transition: color 0.2s;
+            gap: 10px;
+            transition: color 0.3s ease;
         }
 
-        .log-link:hover { color: var(--accent-purple); }
-        
-        .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
-        .dot.dev { background: var(--off-blue); }
-        .dot.public { background: var(--on-green); }
+        .footer-link:hover {
+            color: white;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: currentColor;
+        }
     </style>
 </head>
 <body>
 
-    <div class="bg-glow"></div>
+    <header>
+        <a href="#" class="logo">
+            <span class="on">On</span>Bus<span class="off">Off</span>Bus
+        </a>
+    </header>
 
     <main>
-        <div class="brand-title">
-            <span class="on-text">On</span><span class="bus-text">Bus</span><span class="off-text">Off</span><span class="bus-text">Bus</span>
+        <div class="animation-container">
+            <dotlottie-wc
+                src="https://lottie.host/d24ff661-b3bb-4ca6-bd54-8dd4d7ce1c85/gdCIs4zMwW.lottie"
+                style="width: 300px; height: 300px"
+                autoplay
+                loop
+            ></dotlottie-wc>
         </div>
-        <p class="tagline">Next Stop: Revolution</p>
 
-        <div class="timer-grid">
-            <div class="unit-box">
-                <span class="num" id="d">00</span>
-                <span class="label">Days</span>
+        <div class="hero-text">
+            <h2>System Departure</h2>
+        </div>
+
+        <div class="countdown-grid">
+            <div class="time-card">
+                <span class="time-value" id="days">00</span>
+                <span class="time-label">Days</span>
             </div>
-            <div class="unit-box">
-                <span class="num" id="h">00</span>
-                <span class="label">Hours</span>
+            <div class="time-card">
+                <span class="time-value" id="hours">00</span>
+                <span class="time-label">Hours</span>
             </div>
-            <div class="unit-box">
-                <span class="num" id="m">00</span>
-                <span class="label">Minutes</span>
+            <div class="time-card">
+                <span class="time-value" id="mins">00</span>
+                <span class="time-label">Mins</span>
             </div>
-            <div class="unit-box">
-                <span class="num" id="s">00</span>
-                <span class="label">Seconds</span>
+            <div class="time-card">
+                <span class="time-value" id="secs">00</span>
+                <span class="time-label">Secs</span>
             </div>
         </div>
     </main>
 
     <footer>
-        <a href="dev-logs.html" class="log-link">
-            <span class="dot dev"></span> Internal Developer Logs
+        <a href="dev-logs.html" class="footer-link">
+            <span class="status-dot" style="color: var(--off-blue)"></span> Developer Console
         </a>
-        <a href="public-logs.html" class="log-link">
-            <span class="dot public"></span> System Status & Public Logs
+        <a href="public-logs.html" class="footer-link">
+            <span class="status-dot" style="color: var(--on-green)"></span> Public Status
         </a>
     </footer>
 
     <script>
-        const target = new Date("February 25, 2026 00:00:00").getTime();
+        const launchDate = new Date("February 25, 2026 00:00:00").getTime();
 
-        function tick() {
+        function updateClock() {
             const now = new Date().getTime();
-            const diff = target - now;
+            const t = launchDate - now;
 
-            if (diff <= 0) {
-                document.querySelector("main").innerHTML = "<h1>SYSTEM ONLINE</h1>";
+            if (t <= 0) {
+                document.querySelector(".countdown-grid").innerHTML = "<h3>DEPARTURE COMMENCED</h3>";
                 return;
             }
 
-            const d = Math.floor(diff / (86400000));
-            const h = Math.floor((diff % 86400000) / 3600000);
-            const m = Math.floor((diff % 3600000) / 60000);
-            const s = Math.floor((diff % 60000) / 1000);
+            const d = Math.floor(t / 86400000);
+            const h = Math.floor((t % 86400000) / 3600000);
+            const m = Math.floor((t % 3600000) / 60000);
+            const s = Math.floor((t % 60000) / 1000);
 
-            document.getElementById('d').innerText = d.toString().padStart(2, '0');
-            document.getElementById('h').innerText = h.toString().padStart(2, '0');
-            document.getElementById('m').innerText = m.toString().padStart(2, '0');
-            document.getElementById('s').innerText = s.toString().padStart(2, '0');
+            document.getElementById('days').innerText = d.toString().padStart(2, '0');
+            document.getElementById('hours').innerText = h.toString().padStart(2, '0');
+            document.getElementById('mins').innerText = m.toString().padStart(2, '0');
+            document.getElementById('secs').innerText = s.toString().padStart(2, '0');
         }
 
-        setInterval(tick, 1000);
-        tick();
+        setInterval(updateClock, 1000);
+        updateClock();
     </script>
 </body>
 </html>
