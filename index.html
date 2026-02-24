@@ -3,15 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OnBusOffBus Hub</title>
-    <link rel="manifest" href="manifest.json">
+    <title>Hub | OnBusOffBus</title>
     <style>
         :root {
             --on-green: #27ae60;
             --off-blue: #2980b9;
             --accent-purple: #8e44ad;
+            --error-red: #e74c3c;
             --bg: #05070a;
-            --glass: rgba(255, 255, 255, 0.05);
         }
 
         body {
@@ -21,64 +20,60 @@
             margin: 0;
             display: flex;
             flex-direction: column;
-            align-items: center;
             min-height: 100vh;
         }
 
-        header {
-            width: 100%;
-            padding: 30px;
-            display: flex;
-            justify-content: flex-start;
-        }
-
-        .logo { font-size: 1.5rem; font-weight: 800; text-decoration: none; color: white; }
+        /* Branding */
+        header { padding: 30px; }
+        .logo { font-size: 1.5rem; font-weight: 800; color: white; text-decoration: none; }
         .on { color: var(--on-green); }
         .off { color: var(--off-blue); }
 
-        .app-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            width: 90%;
-            max-width: 1000px;
-            margin-top: 50px;
-        }
-
-        .app-card {
-            background: var(--glass);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 20px;
-            padding: 25px;
+        /* Empty State & Error Display */
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             text-align: center;
-            transition: 0.3s;
+            padding: 20px;
         }
 
-        .app-icon {
-            font-size: 3rem;
-            margin-bottom: 15px;
-            display: block;
-        }
-
-        h3 { margin: 10px 0; }
-        p { color: #94a3b8; font-size: 0.85rem; margin-bottom: 20px; }
-
-        .btn {
+        .status-container {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px dashed rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 60px 40px;
+            max-width: 500px;
             width: 100%;
-            padding: 12px;
-            border-radius: 10px;
-            border: none;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.2s;
-            text-transform: uppercase;
         }
 
-        .btn-download { background: var(--on-green); color: white; }
-        .btn-update { background: var(--accent-purple); color: white; }
-        .btn-open { background: var(--off-blue); color: white; }
-        
-        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .no-apps-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            display: block;
+            opacity: 0.5;
+        }
+
+        h2 { margin-bottom: 10px; font-weight: 700; }
+        p { color: #64748b; margin-bottom: 30px; }
+
+        /* Error Code Styling */
+        .error-footer {
+            margin-top: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+            color: var(--error-red);
+            display: none; /* Only shows when code is present */
+        }
+
+        .error-box {
+            background: rgba(231, 76, 60, 0.1);
+            padding: 5px 12px;
+            border-radius: 5px;
+            border: 1px solid rgba(231, 76, 60, 0.2);
+        }
     </style>
 </head>
 <body>
@@ -87,54 +82,55 @@
         <a href="#" class="logo"><span class="on">On</span>Bus<span class="off">Off</span>Bus</a>
     </header>
 
-    <div class="app-grid">
-        <div class="app-card">
-            <span class="app-icon">🚍</span>
-            <h3>Fleet Manager</h3>
-            <p id="fleet-version-display">Latest: v2.0.1</p>
-            <button id="btn-fleet" class="btn" onclick="appAction('fleet', '2.0.1', 'app-fleet.html')">Checking...</button>
+    <main>
+        <div class="status-container" id="app-viewport">
+            <span class="no-apps-icon">📦</span>
+            <h2>No apps available</h2>
+            <p>The system is currently syncing with the main fleet repository. Please check back later.</p>
+            
+            <div id="error-display" class="error-footer">
+                SYSTEM_FLAG: <span class="error-box" id="error-code">---</span>
+            </div>
         </div>
-    </div>
+    </main>
 
     <script>
-        function appAction(appId, latestVersion, url) {
-            const installedVersion = localStorage.getItem(`${appId}_version`);
-            const btn = document.getElementById(`btn-${appId}`);
+        /**
+         * GLOBAL ERROR HANDLER
+         * Format: XX-00000-XX
+         */
+        const ErrorCodes = {
+            NO_INTERNET: "WI-00000-NI",
+            EMPTY_REPO: "SR-00001-ER",
+            SYNC_FAILURE: "SY-00002-SF",
+            AUTH_DENIED: "AU-00003-AD"
+        };
 
-            if (!installedVersion) {
-                // Initial Download
-                localStorage.setItem(`${appId}_version`, latestVersion);
-                alert("App Registered. You can now add to Home Screen.");
-                refreshUI(appId, latestVersion);
-            } else if (installedVersion !== latestVersion) {
-                // Update Logic
-                localStorage.setItem(`${appId}_version`, latestVersion);
-                alert("Update Complete!");
-                refreshUI(appId, latestVersion);
-            } else {
-                // Open App
-                window.location.href = url;
-            }
+        function triggerError(code) {
+            const display = document.getElementById('error-display');
+            const codeSpan = document.getElementById('error-code');
+            
+            display.style.display = 'block';
+            codeSpan.innerText = code;
         }
 
-        function refreshUI(appId, latest) {
-            const btn = document.getElementById(`btn-${appId}`);
-            const installed = localStorage.getItem(`${appId}_version`);
-
-            if (!installed) {
-                btn.innerText = "Download";
-                btn.className = "btn btn-download";
-            } else if (installed !== latest) {
-                btn.innerText = "Update Available";
-                btn.className = "btn btn-update";
-            } else {
-                btn.innerText = "Open App";
-                btn.className = "btn btn-open";
+        // Logic Check
+        window.addEventListener('load', () => {
+            // 1. Check Internet
+            if (!navigator.onLine) {
+                triggerError(ErrorCodes.NO_INTERNET);
+            } 
+            // 2. Check for apps (Simulated empty for now)
+            else {
+                const appsAvailable = false; 
+                if (!appsAvailable) {
+                    triggerError(ErrorCodes.SR-00001-ER); // Server Repo - Empty
+                }
             }
-        }
+        });
 
-        // Initialize state
-        window.onload = () => refreshUI('fleet', '2.0.1');
+        // Listen for live connection drops
+        window.addEventListener('offline', () => triggerError(ErrorCodes.NO_INTERNET));
     </script>
 </body>
 </html>
